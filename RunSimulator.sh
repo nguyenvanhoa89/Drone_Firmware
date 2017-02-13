@@ -2,7 +2,9 @@ gnome-terminal --working-directory=$PWD/Michael/udp_fork/ -e 'cargo run --releas
 gnome-terminal --working-directory=$PWD/Firmware/ -e 'make posix_sitl_default jmavsim' 
 gnome-terminal --working-directory=$PWD/ -e './QGroundControl.AppImage'
 echo "Select please port 14551 on QGroundControl"
-sleep 60
+read -rsp $'Press any key to continue...\n' -n1 key
 gnome-terminal --working-directory=$PWD/Michael/pulse_server/ -e 'cargo run --release -- test' 
-sleep 10
+read -rsp $'Press any key to continue...\n' -n1 key
 gnome-terminal --working-directory=$PWD/Michael/telemetry_host/ -e 'cargo run --release' 
+read -rsp $'Press any key to continue...\n' -n1 key
+sh ./CallMatlab.sh
