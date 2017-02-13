@@ -1,0 +1,8 @@
+[package]
+name = "udp_fork"
+version = "0.1.0"
+authors = ["Michael Chesser"]
+
+[dependencies]
+tokio-core = "0.1"
+futures = "0.1.6"
