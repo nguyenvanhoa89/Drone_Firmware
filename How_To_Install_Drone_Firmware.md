@@ -30,6 +30,7 @@ cd Firmware
 git submodule update --init --recursive
 ```
 ## 5. Compile and run the simulator
+Ensure it works well.
 ```
 make posix_sitl_default jmavsim
 ```
@@ -41,5 +42,35 @@ App Image URL: https://s3-us-west-2.amazonaws.com/qgroundcontrol/latest/QGroundC
 Store QGroundControl file inside the Drone_Firmware folder, then run below command to enable its executable functionality:
 ```
 chmod +x ./QGroundControl.AppImage
+sudo usermod -a -G dialout $username
+sudo apt-get remove modemmanager
 ```
-## 7. 
+## 7. Download and Install MAVProxy
+URL: http://ardupilot.github.io/MAVProxy/html/getting_started/download_and_installation.html
+First, a few pre-requisite packages need to be installed:
+```
+sudo apt-get install python-dev python-opencv python-wxgtk3.0 python-pip python-matplotlib python-pygame python-lxml -y
+```
+Then download and install MAVProxy via Pypi. Prerequisites will be automatically downloaded too. Note a sudo may be required in some circumstances if the install generates errors:
+```
+pip install MAVProxy
+```
+If not already set, MAVProxy needs to be on the system path:
+```
+echo "export PATH=$PATH:$HOME/.local/bin" >> ~/.bashrc
+```
+The user permissions may also need to be changed to allow access to serial devices:
+```
+sudo adduser <username> dialout
+```
+Use MaVProxy to configure UDP Port:
+```
+mavproxy.py --master=udp:127.0.0.1:14550 --out=udp:127.0.0.1:14551 --out=udp:127.0.0.1:14552
+```
+## 8. Run Simulator.sh
+Can run auto by typing the below command inside Drone_Firmware folder:
+```
+chmod +x ./RunSimulator.sh
+./RunSimulator.sh
+```
+Or manually through instructions @: https://github.com/nguyenvanhoa89/Drone_Firmware/blob/master/ReadMe.md
