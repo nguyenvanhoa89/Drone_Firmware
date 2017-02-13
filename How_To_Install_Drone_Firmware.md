@@ -30,3 +30,10 @@ cd Firmware
 git submodule update --init --recursive
 ```
 ## 5. Compile and run the simulator
+```
+make posix_sitl_default jmavsim
+```
+## 6. Download latest QGroundControl version:
+URL: https://donlakeflyer.gitbooks.io/qgroundcontrol-user-guide/content/download_and_install.html
+
+## 7. 
