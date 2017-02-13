@@ -35,5 +35,9 @@ make posix_sitl_default jmavsim
 ```
 ## 6. Download latest QGroundControl version:
 URL: https://donlakeflyer.gitbooks.io/qgroundcontrol-user-guide/content/download_and_install.html
-
+App Image URL: https://s3-us-west-2.amazonaws.com/qgroundcontrol/latest/QGroundControl.AppImage
+Store QGroundControl file inside the Drone_Firmware folder, then run below command to enable its executable functionality:
+```
+chmod +x ./QGroundControl.AppImage
+```
 ## 7. 
