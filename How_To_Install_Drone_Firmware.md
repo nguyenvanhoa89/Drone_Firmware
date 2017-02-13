@@ -45,6 +45,16 @@ chmod +x ./QGroundControl.AppImage
 sudo usermod -a -G dialout $username
 sudo apt-get remove modemmanager
 ```
+Add Port 14551 by go to Purple icon >> Comm Links >> Add:
+
+* Name: UDP Link Port 14551
+* Type: UDP
+* Listenning Port: 14551
+* Target Hosts: 127.0.0.1
+
+Then press Add button to add new communication channel.
+
+Go to main map, arm and take off UAV to pre-defined altitudes.
 ## 7. Download and Install MAVProxy
 URL: http://ardupilot.github.io/MAVProxy/html/getting_started/download_and_installation.html
 First, a few pre-requisite packages need to be installed:
