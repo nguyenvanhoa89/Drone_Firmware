@@ -1,0 +1,15 @@
+Software in the Loop (SITL)
+
+Here is an example for quadrotor X.
+
+    Start the SITL executable
+    Run jMAVSim in SITL mode:
+
+    java -Djava.ext.dirs= -cp lib/*:out/production/jmavsim.jar me.drton.jmavsim.Simulator -udp 127.0.0.1:14560
+
+    The console will display mavlink messages from the autopilot
+    To connect QGroundControl to this system: QGC menu → Communication → Add Link
+    Link type → UDP (do not change default UDP Port: 14550)
+    Ready to fly!
+
+
