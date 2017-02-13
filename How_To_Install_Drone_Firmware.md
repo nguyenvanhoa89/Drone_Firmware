@@ -55,6 +55,8 @@ Add Port 14551 by go to Purple icon >> Comm Links >> Add:
 
 Then press Add button to add new communication channel.
 
+Please also uncheck UDP when startup.
+
 Go to main map, arm and take off UAV to pre-defined altitudes.
 ## 7. Download and Install MAVProxy
 URL: http://ardupilot.github.io/MAVProxy/html/getting_started/download_and_installation.html
@@ -82,6 +84,8 @@ mavproxy.py --master=udp:127.0.0.1:14550 --out=udp:127.0.0.1:14551 --out=udp:127
 Can run auto by typing the below command inside Drone_Firmware folder:
 ```
 chmod +x ./RunSimulator.sh
-./RunSimulator.sh
+chmod +x ./CallMatlab.sh
+chmod +x ./CallMatlab.sh
+./Closs_all_terminals.sh
 ```
 Or manually through instructions @: https://github.com/nguyenvanhoa89/Drone_Firmware/blob/master/ReadMe.md

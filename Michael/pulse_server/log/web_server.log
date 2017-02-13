@@ -295,3 +295,8 @@
 2017-02-09T12:26:57.345590684+10:30 INFO web_server - New client connected (assigned id: [2])
 2017-02-09T12:26:57.345606122+10:30 INFO web_server - Read command from client [2]: Start(None)
 2017-02-09T12:26:57.345617675+10:30 INFO web_server - Received command from client
+2017-02-14T00:21:29.873395717+10:30 INFO web_server - Starting server
+2017-02-14T00:21:40.725653296+10:30 INFO web_server - Registering client with address: 127.0.0.1:49094
+2017-02-14T00:21:40.726080958+10:30 INFO web_server - New client connected (assigned id: [2])
+2017-02-14T00:21:40.727111149+10:30 INFO web_server - Read command from client [2]: Start(None)
+2017-02-14T00:21:40.727324618+10:30 INFO web_server - Received command from client
