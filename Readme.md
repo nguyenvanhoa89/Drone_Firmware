@@ -88,4 +88,4 @@ chmod +x ./CallMatlab.sh
 chmod +x ./CallMatlab.sh
 ./Closs_all_terminals.sh
 ```
-Or manually through instructions @: https://github.com/nguyenvanhoa89/Drone_Firmware/blob/master/ReadMe.md
+Or manually through instructions @: https://github.com/nguyenvanhoa89/Drone_Firmware/blob/master/How_To_Run_Simulator_Manually.md
