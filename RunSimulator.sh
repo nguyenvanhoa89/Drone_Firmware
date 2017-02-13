@@ -1,6 +1,7 @@
 parentdir=$(dirname `pwd`)
 gnome-terminal --working-directory=$PWD/Michael/udp_fork/ -e 'cargo run --release -- 14550 14551 14552' 
 gnome-terminal --working-directory=$parentdir/Firmware/ -e 'make posix_sitl_default jmavsim' 
+read -rsp $'Press any key to call QGroundControl...\n' -n1 key
 gnome-terminal --working-directory=$PWD/ -e './QGroundControl.AppImage'
 echo "Select please port 14551 on QGroundControl"
 read -rsp $'Press any key to call pulse server...\n' -n1 key
