@@ -8,4 +8,4 @@ Cargo.lock
 # Ignore build file
 /build_posix_sitl_default/
 *.AppImage
-*.dat
+*.mat
