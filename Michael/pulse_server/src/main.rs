@@ -41,12 +41,17 @@ use std::env;
 fn main() {
 	
 	// Read from CSV File
-	let mut rdr = csv::Reader::from_file("config/Gain_Angle_Table.txt").unwrap().has_headers(false);
+//	let mut rdr = csv::Reader::from_file("config/Gain_Angle_Table.txt").unwrap().has_headers(false);
+	let mut rdr = csv::Reader::from_file("config/3D_Directional_Gain_Pattern.txt").unwrap().has_headers(false);
 	//let mut gain_angle = Vec::new();
     for record in rdr.decode() {
-        let (theta, phi, vdb, hdb, tdb): (f32, f32, f32,f32,f32) = record.unwrap();
+	/*Gain_Angle_Table
+        let (theta, phi, vdb, hdb, tdb): (f32,f32,f32) = record.unwrap();
         drop(theta); drop(phi); drop(vdb); drop(hdb);
-//        println!("({} {}  {}  {} : {})", s1, s2, s3, s4, s5);
+	*/
+//	3D_Directional_Gain_Pattern
+	let (phi, theta, tdb): (f32,f32,f32) = record.unwrap();
+        drop(theta); drop(phi); 
         GAIN_ANGLE.lock().unwrap().push(tdb);
     }
 //    println!("{}", GAIN_ANGLE.lock().unwrap()[26-1]);

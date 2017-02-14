@@ -300,3 +300,14 @@
 2017-02-14T00:21:40.726080958+10:30 INFO web_server - New client connected (assigned id: [2])
 2017-02-14T00:21:40.727111149+10:30 INFO web_server - Read command from client [2]: Start(None)
 2017-02-14T00:21:40.727324618+10:30 INFO web_server - Received command from client
+2017-02-14T10:19:53.855071150+10:30 INFO web_server - Starting server
+2017-02-14T10:22:20.828148728+10:30 INFO web_server - Registering client with address: 127.0.0.1:46980
+2017-02-14T10:22:20.828185357+10:30 INFO web_server - New client connected (assigned id: [2])
+2017-02-14T10:22:20.828203885+10:30 INFO web_server - Read command from client [2]: Start(None)
+2017-02-14T10:22:20.828216305+10:30 INFO web_server - Received command from client
+2017-02-14T10:24:10.724347338+10:30 INFO web_server - Dropped Client: [2]
+2017-02-14T10:27:12.449511902+10:30 INFO web_server - Starting server
+2017-02-14T10:27:19.774256943+10:30 INFO web_server - Registering client with address: 127.0.0.1:47312
+2017-02-14T10:27:19.774310892+10:30 INFO web_server - New client connected (assigned id: [2])
+2017-02-14T10:27:19.774331497+10:30 INFO web_server - Read command from client [2]: Start(None)
+2017-02-14T10:27:19.774346815+10:30 INFO web_server - Received command from client

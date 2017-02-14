@@ -2,7 +2,7 @@ use std::cmp;
 use std::error::Error;
 use std::thread;
 use std::time::Duration;
-use std::f32::consts;
+// use std::f32::consts;
 use std::sync::mpsc::{channel, sync_channel, Sender, SyncSender, TrySendError};
 
 use std::fs::File;
@@ -258,7 +258,7 @@ fn no_source_hoa(pulse_sender: Sender<Vec<Pulse>>) {
 		
 		*/
 		// Observation with ref information
-		let a_ref:f32 = 12.67;
+		let a_ref:f32 = -10.65; //12.67 if Gain_Angle_Table, -10.65 if 3D_Directional_Gain_Pattern
 		let d_ref:f32 = 40.0;
 		// Calculate Observation		
 		let obs1 = friis_with_ref(a_ref, d_ref, target1,uav,get_antenna_gain(target1, uav)) + normal.ind_sample(&mut rand::thread_rng()) as f32 ;
@@ -303,7 +303,7 @@ fn get_antenna_gain(target: TargetLocation, uav: UavLocation) -> f32 {
 	use cgmath::Vector2;
 	let v1 = Vector2::new(target.x, target.y) - Vector2::new(uav.x, uav.y);
 	let v2 = Vector2::new(uav.yaw.sin(), uav.yaw.cos()) ;
-	let resolution:f32 = 15.0;
+	let resolution:f32 = 15.0; // 15 if Gain_Angle_Table, 15 if 3D_Directional_Gain_Pattern
 	let phi_in_rad : f32 = v1.angle(v2.into()).0;
 	let mut phi_in_degrees = phi_in_rad.to_degrees() as f32;
 	if phi_in_degrees < 0.0 {

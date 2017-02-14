@@ -21,26 +21,34 @@ impl GainControl {
     }
 
     pub fn check_gain(&mut self, pulses: &[Pulse]) -> Option<GainConfig> {
+		println!("current gain: {:?}",self.current_gain);
+		//let max_gain = GainConfig {lna_gain: 40, vga_gain: 62};
         let max_pulse = pulses.iter().map(|x| x.signal_strength)
             .fold(None, |old, x| Some(x.max(old.unwrap_or(x))));
-
+		println!("Max pulse: {:?}",max_pulse);
         if let Some(pulse) = max_pulse {
             self.samples_since_pulse = 0;
-
-            if pulse > 0.9 {
+	    println!("pulse: {:?}",pulse);
+            if pulse > 0.9{
                 self.current_gain = decrease_gain(self.current_gain.total_gain(), pulse);
                 return Some(self.current_gain);
             }
+	
         }
-
-        if self.samples_since_pulse > self.wait_time {
-            self.samples_since_pulse -= self.wait_time;
-            self.current_gain = increase_gain(self.current_gain.total_gain());
-
-            return Some(self.current_gain);
-        }
-
+        println!("sample since pulse: {:?}",self.samples_since_pulse);
+			//println!("wait time: {:?}",self.wait_time);
+			
+	        if self.samples_since_pulse > self.wait_time {
+	            self.samples_since_pulse -= self.wait_time;
+	            self.current_gain = increase_gain(self.current_gain.total_gain());
+	
+	            return Some(self.current_gain);
+	        }
+		
         None
+
+//	return Some(GainConfig::new(80))
+
     }
 }
 
