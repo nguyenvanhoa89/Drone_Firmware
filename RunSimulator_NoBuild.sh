@@ -1,0 +1,14 @@
+parentdir=$(dirname `pwd`)
+gnome-terminal --working-directory=$PWD/Michael/udp_fork/ -e 'cargo run --release -- 14550 14551 14552' 
+gnome-terminal --working-directory=$parentdir/Firmware/ -e 'make posix_sitl_default jmavsim' 
+read -rsp $'Press any key to call QGroundControl...\n' -n1 key
+gnome-terminal --working-directory=$PWD/ -e './QGroundControl.AppImage'
+echo "Select please port 14551 on QGroundControl"
+read -rsp $'Press any key to call pulse server...\n' -n1 key
+cp -fr $PWD/Michael/pulse_server/target/release/pulse_server $PWD/Michael/pulse_server/ 
+gnome-terminal --working-directory=$PWD/Michael/pulse_server/ -e './pulse_server test test' 
+read -rsp $'Press any key to call telemetry host...\n' -n1 key
+cp -fr $PWD/Michael/telemetry_host/target/release/telemetry_host $PWD/Michael/telemetry_host/ 
+gnome-terminal --working-directory=$PWD/Michael/telemetry_host/ -e './telemetry_host' 
+read -rsp $'Press any key to call matlab program...\n' -n1 key
+sh ./CallMatlab.sh
