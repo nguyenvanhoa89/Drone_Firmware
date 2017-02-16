@@ -1,7 +1,7 @@
 {
   "hackrf_config": {
     "samp_rate": 2000000,
-    "center_freq": 150500000,
+    "center_freq": 150000000,
     "auto_gain": true,
     "lna_gain": 0,
     "vga_gain": 0,
@@ -12,15 +12,23 @@
   },
   "pulse_targets": [
     {
-      "freq": 150421000.0,
-      "duration": 0.0115,
-      "duration_variance": 0.0005,
+      "freq": 150130000.0,
+      "duration": 0.0185,
+      "duration_variance": 0.0002,
       "threshold": 0.0005,
       "edge_length": 10,
       "peak_lookahead": 5
     },
     {
-      "freq": 151201000.0,
+      "freq": 150411000.0,
+      "duration": 0.158,
+      "duration_variance": 0.03,
+      "threshold": 0.0005,
+      "edge_length": 10,
+      "peak_lookahead": 5
+    },
+    {
+      "freq": 152048000.0,
       "duration": 0.0115,
       "duration_variance": 0.0005,
       "threshold": 0.0005,
@@ -29,8 +37,8 @@
     },
     {
       "freq": 150201000.0,
-      "duration": 0.0115,
-      "duration_variance": 0.0005,
+      "duration": 0.241,
+      "duration_variance": 0.03,
       "threshold": 0.0005,
       "edge_length": 10,
       "peak_lookahead": 5

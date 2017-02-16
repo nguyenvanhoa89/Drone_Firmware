@@ -23,6 +23,10 @@ impl GainControl {
     pub fn check_gain(&mut self, pulses: &[Pulse]) -> Option<GainConfig> {
 		println!("current gain: {:?}",self.current_gain);
 		//let max_gain = GainConfig {lna_gain: 40, vga_gain: 62};
+		let default_gain = GainConfig {lna_gain: 40, vga_gain: 32};
+		self.current_gain = default_gain;
+		return Some(self.current_gain );
+		/*
         let max_pulse = pulses.iter().map(|x| x.signal_strength)
             .fold(None, |old, x| Some(x.max(old.unwrap_or(x))));
 		println!("Max pulse: {:?}",max_pulse);
@@ -46,6 +50,7 @@ impl GainControl {
 	        }
 		
         None
+        */
 
 //	return Some(GainConfig::new(80))
 
