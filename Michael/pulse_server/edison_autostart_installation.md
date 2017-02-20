@@ -3,6 +3,7 @@
 Configure and copy the `edison_pulse_server.service` file to the systemd director (i.e. the
 final path to the file should be `/lib/systemd/system/edison_pulse_server.service`) on the Edison,
 then run the following commands:
+scp hoa@129.127.10.229:/home/hoa/transfer/edison_pulse_server.service /lib/systemd/system/
 
 ```bash
 chmod 644 /lib/systemd/system/edison_pulse_server.service

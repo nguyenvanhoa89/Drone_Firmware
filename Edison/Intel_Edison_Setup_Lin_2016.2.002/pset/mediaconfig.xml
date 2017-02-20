@@ -1,0 +1,68 @@
+<MediaConfig>
+    <Name>${suite_name}</Name>
+    <Description>${suite_desc}</Description>
+    <GUID>1465907383902</GUID>
+    <Product platform="IA32;INTEL64" id="1">
+        <Name>${product_core_name}</Name>
+        <Description/>
+        <Layers/>
+        <InstallSubdir>/</InstallSubdir>
+        <Component platform="IA32;INTEL64" invisible="0" id="1" depend="" mandatory="1" core="1">
+            <Name>${product_core_name}</Name>
+            <Description>${product_core_desc}</Description>
+            <Selected>1</Selected>
+            <Layers/>
+            <RPMProductFamily>iot_core</RPMProductFamily>
+            <RPMProductCode>iot_core-2016.2.002.tgz</RPMProductCode>
+            <Version>2016.2</Version>
+            <RPMProductRelease>002</RPMProductRelease>
+            <RPMProductArch>noarch</RPMProductArch>
+            <NONRPMProductCode>iot_core-2016.2.002.tgz</NONRPMProductCode>
+            <Abbr>iot_core__noarch</Abbr>
+            <Data>0</Data>
+            <Type>tgz</Type>
+            <RPMFileDir>${PACKAGE_DIR}/rpm</RPMFileDir>
+        </Component>
+    </Product>
+    <Product platform="IA32;INTEL64" id="2">
+        <Name>${product_ide_name}</Name>
+        <Description/>
+        <Layers/>
+        <InstallSubdir>/</InstallSubdir>
+        <Component platform="IA32;INTEL64" invisible="0" id="205" depend="1.1" mandatory="1" core="0">
+            <Name>${product_edison_name}</Name>
+            <Description>${product_edison_desc}</Description>
+            <Selected>1</Selected>
+            <Layers/>
+            <ProxyURL>${PROXY_URL}</ProxyURL>
+            <RPMProductFamily>iot_edison</RPMProductFamily>
+            <RPMProductCode>iot_edison-2016.2.002.tgz</RPMProductCode>
+            <Version>2016.2</Version>
+            <RPMProductRelease>002</RPMProductRelease>
+            <RPMProductArch>noarch</RPMProductArch>
+            <NONRPMProductCode>iot_edison-2016.2.002.tgz</NONRPMProductCode>
+            <Abbr>iot_edison__noarch</Abbr>
+            <Data>0</Data>
+            <Type>tgz</Type>
+            <RPMFileDir>${PACKAGE_DIR}/rpm</RPMFileDir>
+        </Component>
+    </Product>
+    <Product platform="IA32;INTEL64" invisible="1" id="3" mandatory="1">
+        <Name>Uninstaller</Name>
+        <Description>Uninstaller</Description>
+        <InstallSubdir>/</InstallSubdir>
+        <Component platform="IA32;INTEL64" invisible="1" id="1" mandatory="1">
+            <Name>Uninstaller</Name>
+            <Description>Uninstaller</Description>
+            <RPMFileDir>${PACKAGE_DIR}/rpm</RPMFileDir>
+            <Version>2016.2</Version>
+            <RPMProductRelease>002</RPMProductRelease>
+            <Selected>1</Selected>
+            <RPMProductCode>iot_core-pset-2016.2.002.tgz</RPMProductCode>
+            <NONRPMProductCode>iot_core-pset-2016.2.002.tgz</NONRPMProductCode>
+            <Type>tgz</Type>
+            <Abbr>iot_core-pset</Abbr>
+            <Data>[[UNINSTALLER_SIZE]]</Data>
+        </Component>
+    </Product>
+</MediaConfig>

@@ -1,0 +1,32 @@
+This text file is the “third-party-programs.rtf” file specified in Section 1.J of the End User License Agreement for Intel(R) Software (“Agreement”), and all capitalized terms used but not defined in this third-party-programs.rtf file have the same meaning as specified in the Agreement.
+
+The Third Party Programs files and the corresponding third party licenses are listed below.  As specified in the Agreement, the listed Third Party Programs files are subject to the corresponding third party licenses that solely and exclusively govern Your use of the Third Party Programs.
+
+List of Third Party Programs:
+Eclipse				EPL 
+Intel® IoT Developer Kit Eclipse Plugin 	EPL
+Logj4 (used by eclipse plugin)	Apache 2.0
+JmDNS 			Apache 2.0
+Apache Commons Compress 	Apache 2.0
+Apache Commons IO		Apache 2.0
+Yocto layers			MIT
+Libmraa & UPM			MIT
+Other 3rd party/Poky		Various FOSS licenses
+CDC driver         		GPL	                                                                  
+FTDI driver  	                          FTDI Driver License
+Arduino				GPL
+Arduino C++ Microcontroller libraries	LGPL
+Adafruit Sensor Board Image	Adafruit Sensor Board Image License
+Ryan Pavlik cmake-modules	Boost Software License 1.0
+Seeed Sensor Image License	Seeed Sensor Image License
+Sparkfun Images		Creative Commons Attribution Non Commercial Share Alike 3.0
+UPM 				BSD 3-clause "New" or "Revised" License
+UPM				BSD 2-clause “Simplified” License
+Win32DiskImager			GPL V2
+DoxyPort			MIT
+TinyB				MIT
+
+ 
+
+* Other names and brands may be claimed as the property of others.
+
