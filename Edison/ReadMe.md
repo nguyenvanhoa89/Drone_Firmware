@@ -19,7 +19,7 @@ Get edison IP address:
 ```
 ifconfig
 ```
-129.127.146.175
+169.254.18.110
 
 type in your laptop
 ```
