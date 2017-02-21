@@ -37,4 +37,4 @@ you should see
 ```
 /dev/ttyUSB0
 ```
-
+git filter-branch --index-filter 'git rm -r --cached --ignore-unmatch Edison/edison.image Edison/edison.zip Edison/iot-devkit-prof-dev-image-edison-20160606.zip' -f HEAD
