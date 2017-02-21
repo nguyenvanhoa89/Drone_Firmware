@@ -73,4 +73,12 @@ Install nmap to check port open or not
 sudo apt-get install nmap
 nmap -p 22 192.168.42.1
 ```
+Then you need to connect your laptop to Edison AP
+# 3. Enable Pulse Server
+type the below command (copy then click middle mouse button to paste)
+```
+cd Drone/trackerbots_telemetry/pulse_server/
+./target/release/pulse_server
+
+```
 
