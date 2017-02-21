@@ -69,7 +69,7 @@ fn write_json<W: Write, T: Serialize>(writer: &mut W, buffer: &mut Vec<u8>, valu
 
 fn run_pulse_client() {
     let mut buffer = vec![];
-    let mut connection = TcpStream::connect("127.0.0.1:11000")
+    let mut connection = TcpStream::connect("192.168.42.1:11000")
         .expect("Failed to connect to Pulse Stream");
 
     write_json(&mut connection, &mut buffer, &Command::Start(None));
