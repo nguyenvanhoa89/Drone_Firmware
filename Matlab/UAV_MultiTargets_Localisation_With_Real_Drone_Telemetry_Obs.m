@@ -13,7 +13,8 @@ nuav = 4;
 dt = 1; % second
 q = 2;
 % ntarget = 2;
-target_frequency = [150,148,152];
+% target_frequency = [150,148,152];
+target_frequency = [1,2];
 ntarget = size(target_frequency,2);
 Obs_From_Tele = 1; % Set this para to 0 if want to run locally
 uav0 = [0;0;20;0];
@@ -31,7 +32,7 @@ theta_max = pi/6; % max rotate angle (must less than pi) % current best 5*pi/6; 
 N_theta = 1; %12 is current best
 % Np = 1; % max velocity = Np * vu (m/s) % 2 with 5m/s is current best
 vu = 5; % m/s
-RSS_Threshold = -40; % dB Ref: -25, Normal: -125
+RSS_Threshold = 20*log10(1/256) - 102; % dB Ref: -25, Normal: -125
 plot_box = 1;
 %% PDF of process noise and noise generator function
 % sigma_u = q^nx * eye(nx);
@@ -76,9 +77,10 @@ gain_angle = load('3D_Directional_Gain_Pattern.txt'); % Phi Theta	TdB
 % obs = @(k, x, vk,uav,gain_angle) friis(Pt, Gt, Gr, lambda, L, d(x,uav(1:3,:)),Get_Antenna_Gain(x, uav,gain_angle))     + vk ;     % (returns column vector)
 % obs = @(k, x, vk,uav,gain_angle) friis_2model(Pt, Gt, Gr, lambda, L, x,uav,Get_Antenna_Gain(x, uav,gain_angle))     + vk ;     % (returns column vector)
 % For ref model
-A_ref = -10.65 ; d0 = 40; % (m) 12.67, change to other to test
+A_ref = -10.65 - 0.454*64 ; d0 = 40; % (m) 12.67, change to other to test
+% A_ref = -25.6603 ; d0 = 1; % (m) 12.67, change to other to test
 obs = @(k, x, vk,uav,gain_angle)  friis_with_ref(A_ref,d0, d(x,uav(1:3,:)),Get_Antenna_Gain(x, uav,gain_angle))     + vk ;     % (returns column vector)
-
+obs_real = @(amplitude, gain) 20 *log10(amplitude) - 0.454 * gain ;
 %% UAV Initialization
 uav = zeros(nuav,T);
 URL = 'http://localhost:8000/';
@@ -180,7 +182,9 @@ for time = 1:Time
         Pulse.pulse_data = cell(T,1);
         Pulse.pulse_struct = cell(T,1);
         Pulse.pulse_freq = cell(T,1);
+        Pulse.pulse_signal_strength = cell(T,1);
         Pulse.pulse_rss = cell(T,1);
+        Pulse.gain = cell(T,1);
         % Main program for estimation
         for k = 2:T
             fprintf('Iteration = %d/%d\n',k,T);
@@ -189,14 +193,16 @@ for time = 1:Time
                 [Pulse.pulse_data{k}, Pulse.pulse_index(k)] =  Read_Pulses_With_Index(Pulse.pulse_index(k-1)) ;
                  Pulse.pulse_struct{k} = [Pulse.pulse_data{k}.pulse];
                  Pulse.pulse_freq{k} = fliplr([Pulse.pulse_struct{k}(:).freq]); % flip to get latest data first
-                 Pulse.pulse_rss{k} = fliplr([Pulse.pulse_struct{k}(:).signal_strength]);
+                 Pulse.pulse_signal_strength{k} = fliplr([Pulse.pulse_struct{k}(:).signal_strength]);
+                 Pulse.pulse_gain{k} = fliplr([Pulse.pulse_struct{k}(:).gain]);
+                 Pulse.pulse_rss{k} = obs_real(Pulse.pulse_signal_strength{k},Pulse.pulse_gain{k});
                  pulse_rss = Pulse.pulse_rss{k} ;
                 % update measurement from pulse data
                 for i=1:ntarget
                    if ~isempty(pulse_rss(target_frequency(i) == Pulse.pulse_freq{k}))
                        [~,indx] = max(target_frequency(i) == Pulse.pulse_freq{k},[],2); % get latest info
                         measurement(i) = pulse_rss(indx);
-                        if measurement(i) < RSS_Threshold || ~ isempty(est.foundTargetList(i == est.foundTargetList))
+                        if Pulse.pulse_signal_strength{k}(indx) < 1/256 || Pulse.pulse_signal_strength{k}(indx) > 0.95 || ~ isempty(est.foundTargetList(i == est.foundTargetList))
                            measurement(i) = RSS_Threshold;
                         end
                    end

@@ -20,14 +20,12 @@ pub fn start_task(config: Config) -> TaskHandle<Pulse, Command> {
     let (mut task, task_handle) = init_task();
 
     info!(target: "hackrf_task", "Starting HackRF task");
-    thread::spawn(move|| {
-        loop {
-            info!(target: "hackrf_task", "Running HackRF");
+    thread::spawn(move || loop {
+        info!(target: "hackrf_task", "Running HackRF");
 
-            if let Err(e) = run_hackrf(&mut task, config.clone()) {
-                error!(target: "hackrf_task", "HackRF task failure: {}", e);
-                thread::sleep(Duration::from_secs(10));
-            }
+        if let Err(e) = run_hackrf(&mut task, config.clone()) {
+            error!(target: "hackrf_task", "HackRF task failure: {}", e);
+            thread::sleep(Duration::from_secs(10));
         }
     });
 
@@ -139,7 +137,10 @@ impl<'a> HackRFTask<'a> {
                         try!(self.task.data_sender.send(pulse));
                     }
 
-                    if self.config.hackrf_config.auto_gain {
+                    if self.config.hackrf_config.auto_gain
+
+
+ {
                         self.gain_control.update_sample_count(data.len() as u64);
                         if let Some(gain_update) = self.gain_control.check_gain(&pulses) {
                             println!("Updating gain: {:?}", gain_update);

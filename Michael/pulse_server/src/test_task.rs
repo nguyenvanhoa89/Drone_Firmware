@@ -265,9 +265,9 @@ fn no_source_hoa(pulse_sender: Sender<Vec<Pulse>>) {
 		let obs2 = friis_with_ref(a_ref, d_ref, target2,uav,get_antenna_gain(target2, uav))  + normal.ind_sample(&mut rand::thread_rng()) as f32;
 		let obs3 = friis_with_ref(a_ref, d_ref, target3,uav,get_antenna_gain(target3, uav))  + normal.ind_sample(&mut rand::thread_rng())  as f32;	
 		// Update pulse		
-        let pulse1 = Pulse { freq: 148.0, signal_strength: obs1, gain: 0, timestamp: now };
-        let pulse2 = Pulse { freq: 152.0, signal_strength: obs2, gain: 0, timestamp: now };
-        let pulse3 = Pulse { freq: 150.0, signal_strength: obs3, gain: 0, timestamp: now };
+        let pulse1 = Pulse { freq: 148.0, signal_strength: obs1, gain: 48, timestamp: now };
+        let pulse2 = Pulse { freq: 152.0, signal_strength: obs2, gain: 40, timestamp: now };
+        let pulse3 = Pulse { freq: 150.0, signal_strength: obs3, gain: 32, timestamp: now };
         let pulse_vec = vec![pulse1, pulse2, pulse3];
         println!("Pulse: {:?}", pulse_vec);
         if pulse_sender.send(pulse_vec).is_err() {
