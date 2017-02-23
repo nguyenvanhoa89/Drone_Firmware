@@ -12,23 +12,28 @@ nx = 3;  % number of states
 nuav = 4;
 dt = 1; % second
 q = 2;
-ntarget = 5;
+% ntarget = 2;
+% target_frequency = [150,148,152];
+% target_frequency = [1,2];
+target_frequency = [150130000,150411000,150201000];
+ntarget = size(target_frequency,2);
+Obs_From_Tele = 1; % Set this para to 0 if want to run locally
 uav0 = [0;0;20;0];
 sys = @(k, x, uk) x + uk; % random walk object
-R_max = 250;
+R_max = 100;
 x0 = [R_max * (2*rand -1); R_max * (2*rand -1); 0];  
 %% Initial variable
-T = 900; % 15 minutes is max
+T = 500; % 15 minutes is max
 % Time = 1;
 pf.Ns = 3000;             % number of particles
 Ms = 100; % 100 is current best
 alpha = 0.5;
-Area = [-R_max -R_max uav0(3);R_max+1 R_max+1 uav0(3)]';
+Area = [-R_max -R_max uav0(3);R_max R_max uav0(3)]';
 theta_max = pi/6; % max rotate angle (must less than pi) % current best 5*pi/6; pi/2 not work well
 N_theta = 1; %12 is current best
 % Np = 1; % max velocity = Np * vu (m/s) % 2 with 5m/s is current best
 vu = 5; % m/s
-RSS_Threshold = -125; % dB
+RSS_Threshold = 20*log10(1/256) - 102; % dB Ref: -25, Normal: -125
 plot_box = 1;
 %% PDF of process noise and noise generator function
 % sigma_u = q^nx * eye(nx);
@@ -38,7 +43,7 @@ nu = size(sigma_u,2); % size of the vector of process noise
 p_sys_noise   = @(u) mvnpdf(u, zeros(1,nu), sigma_u);
 gen_sys_noise = @(u) mvnrnd(zeros(1,nu),sigma_u,1)';         % sample from p_sys_noise (returns column vector)
 %% PDF of observation noise and noise generator function
-sigma_v = 5^2;
+sigma_v = 7^2;
 nv =  size(sigma_v,1);  % size of the vector of observation noise
 p_obs_noise   = @(v) mvnpdf(v, zeros(1,nv), sigma_v);
 gen_obs_noise = @(v) mvnrnd(zeros(1,nv),sigma_v,1)';         % sample from p_obs_noise (returns column vector)
@@ -68,10 +73,15 @@ err_loc = 0.2;
 phi = [2 3];
 % gain_angle = load('3D_Directional_Gain_2Yagi_Element.txt'); % Theta	Phi	VdB	HdB	TdB
 gain_angle = load('3D_Directional_Gain_Pattern.txt'); % Phi Theta	TdB
+
 % obs = @(k, x, vk,uav) d(x,uav)     + vk ;     
 % obs = @(k, x, vk,uav,gain_angle) friis(Pt, Gt, Gr, lambda, L, d(x,uav(1:3,:)),Get_Antenna_Gain(x, uav,gain_angle))     + vk ;     % (returns column vector)
-obs = @(k, x, vk,uav,gain_angle) friis_2model(Pt, Gt, Gr, lambda, L, x,uav,Get_Antenna_Gain(x, uav,gain_angle))     + vk ;     % (returns column vector)
-
+% obs = @(k, x, vk,uav,gain_angle) friis_2model(Pt, Gt, Gr, lambda, L, x,uav,Get_Antenna_Gain(x, uav,gain_angle))     + vk ;     % (returns column vector)
+% For ref model
+A_ref = -7 - 0.454*32 ; d0 = 1; % (m) 12.67, change to other to test
+% A_ref = -25.6603 ; d0 = 1; % (m) 12.67, change to other to test
+obs = @(k, x, vk,uav,gain_angle)  friis_with_ref(A_ref,d0, d(x,uav(1:3,:)),Get_Antenna_Gain(x, uav,gain_angle))     + vk ;     % (returns column vector)
+obs_real = @(amplitude, gain) 20 *log10(amplitude) - 0.454 * gain ;
 %% UAV Initialization
 uav = zeros(nuav,T);
 URL = 'http://localhost:8000/';
@@ -103,6 +113,7 @@ pf.sigma_u         = sigma_u;
 pf.RSS_Threshold   = RSS_Threshold;
 pf.R_max           = R_max;
 pf.gain_angle      = gain_angle;
+pf.mean_rss_std    = zeros(1,T);
 %pf.p_x0 = p_x0;                          % initial prior PDF p(x[0])
 %pf.p_xk_given_ xkm1 = p_xk_given_xkm1;   % transition prior PDF p(x[k] | x[k-1])
 
@@ -111,6 +122,7 @@ pf.gain_angle      = gain_angle;
 
 Time = 1;
 % mdp_cycles = [1,3,5,7,10];
+% mdp_cycles = [5,7,10,13,15];
 mdp_cycles = [5];
 % MC_Results
 for time = 1:Time
@@ -127,13 +139,14 @@ for time = 1:Time
            end   
         end
     end
+    
 
     for mdp_cycle = 1:size(mdp_cycles,2)
         uav = zeros(nuav,T);
 %         MC_Results.uav_travel_distance(time,mdp_cycle) = 0;
         est.foundTargetList = [];
         uav_travel_distance_k = 0;
-        measurement = zeros(1,ntarget);
+        measurement = RSS_Threshold* ones(1,ntarget);
         Reward = zeros(1,ntarget);
 %        disp(mdp_cycle) ;
         tic;
@@ -161,17 +174,51 @@ for time = 1:Time
 %             meas.UAV{i} = zeros(nuav,T);
             meas.Reward{i} = zeros(1,T);
         end
+        %% Intialize pulse
+        clear Pulse;
+        url = 'http://localhost:8000/pulses/';
+        Pulse.pulse_index = zeros(1,T);
+        Pulse.pulse_index(1) = size(webread([url, num2str(0)]),1);
+        pause(1);
+        Pulse.pulse_data = cell(T,1);
+        Pulse.pulse_struct = cell(T,1);
+        Pulse.pulse_freq = cell(T,1);
+        Pulse.pulse_signal_strength = cell(T,1);
+        Pulse.pulse_rss = cell(T,1);
+        Pulse.gain = cell(T,1);
         % Main program for estimation
         for k = 2:T
             fprintf('Iteration = %d/%d\n',k,T);
             data = webread(URL);
-            uav(:,k) = [data.position(1:2);data.position(4); data.heading /180*pi]; 
-            for i=1:ntarget 
-               measurement(i) = obs(k, truth.X{i}(:,k),   gen_obs_noise(),uav(:,k),pf.gain_angle);
-               if measurement(i) < RSS_Threshold || ~ isempty(est.foundTargetList(i == est.foundTargetList))
-                   measurement(i) = RSS_Threshold;
-               end
+            if Obs_From_Tele == 1  
+                [Pulse.pulse_data{k}, Pulse.pulse_index(k)] =  Read_Pulses_With_Index(Pulse.pulse_index(k-1)) ;
+                 Pulse.pulse_struct{k} = [Pulse.pulse_data{k}.pulse];
+                 Pulse.pulse_freq{k} = fliplr([Pulse.pulse_struct{k}(:).freq]); % flip to get latest data first
+                 Pulse.pulse_signal_strength{k} = fliplr([Pulse.pulse_struct{k}(:).signal_strength]);
+                 Pulse.pulse_gain{k} = fliplr([Pulse.pulse_struct{k}(:).gain]);
+                 Pulse.pulse_rss{k} = obs_real(Pulse.pulse_signal_strength{k},Pulse.pulse_gain{k});
+                 pulse_rss = Pulse.pulse_rss{k} ;
+                % update measurement from pulse data
+                for i=1:ntarget
+                   if ~isempty(pulse_rss(target_frequency(i) == Pulse.pulse_freq{k}))
+                       [~,indx] = max(target_frequency(i) == Pulse.pulse_freq{k},[],2); % get latest info
+                        measurement(i) = pulse_rss(indx);
+                        if Pulse.pulse_signal_strength{k}(indx) < 1/256 || Pulse.pulse_signal_strength{k}(indx) > 0.95 || ~ isempty(est.foundTargetList(i == est.foundTargetList))
+                           measurement(i) = RSS_Threshold;
+                        end
+                   end
+                end
+            else
+                % Get update measurement from simulated data
+                for i=1:ntarget 
+                   measurement(i) = obs(k, truth.X{i}(:,k),   gen_obs_noise(),uav(:,k),pf.gain_angle);
+                   if measurement(i) < RSS_Threshold || ~ isempty(est.foundTargetList(i == est.foundTargetList))
+                       measurement(i) = RSS_Threshold;
+                   end
+                end
             end
+            uav(:,k) = [data.position(1:2);data.position(4); data.heading /180*pi]; 
+            
             if mean(measurement) == RSS_Threshold
                 TargetList = 1:1:ntarget;
                 TargetList ( est.foundTargetList) = [];
@@ -235,6 +282,18 @@ for time = 1:Time
             prev_uav = [data.position(1:2);data.position(4); data.heading /180*pi]; 
             uav(:,k) = prev_uav;
             pause(1);
+        end
+        if Obs_From_Tele == 1
+            truth.X{1} = [400;50;0];
+            truth.X{2} = [50;100;0];
+            truth.X{3} = [200;300;0];
+            for i=1:ntarget
+                x(:,1) = truth.X{i};                
+               for k=2:T
+                    x(:,k) = sys(k, x(:,k-1), [0;0;0]); 
+                    truth.X{i}= [truth.X{i} x(:,k)];
+               end   
+            end
         end
         Plot_Target_Estimated_Position (truth, est, uav);
         Send_Command_To_UAV (uav0);

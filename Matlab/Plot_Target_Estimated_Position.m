@@ -48,5 +48,6 @@ function Plot_Target_Estimated_Position (truth, est, uav)
     %    text(est.X{i}(1,est.foundIndex{i}) +1,est.X{i}(2,est.foundIndex{i})+1, num2str(i));
     end
     % axis([0,350,0,350]);
-    axis([0,R_max,0,R_max]);
+%     axis([0,R_max,0,R_max]);
+    axis([-R_max,R_max,-R_max,R_max]);
 end

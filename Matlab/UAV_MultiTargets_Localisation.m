@@ -15,15 +15,15 @@ q = 2;
 ntarget = 10;
 uav0 = [0;0;20;0];
 sys = @(k, x, uk) x + uk; % random walk object
-R_max = 500;
-x0 = [R_max * rand; R_max * rand; 0];  
+R_max = 250;
+x0 = [R_max * (2*rand -1); R_max * (2*rand -1); 0];  
 %% Initial variable
 T = 900; % 15 minutes is max
 % Time = 1;
 pf.Ns = 3000;             % number of particles
 Ms = 100; % 100 is current best
 alpha = 0.5;
-Area = [0 0 uav0(3);R_max R_max uav0(3)]';
+Area = [-R_max -R_max uav0(3);R_max R_max uav0(3)]';
 theta_max = 5*pi/6; % max rotate angle (must less than pi) % current best 5*pi/6; pi/2 not work well
 N_theta = 12; %12 is current best
 Np = 1; % max velocity = Np * vu (m/s) % 2 with 5m/s is current best
@@ -45,7 +45,7 @@ gen_obs_noise = @(v) mvnrnd(zeros(1,nv),sigma_v,1)';         % sample from p_obs
 
 %% Initial PDF
 % p_x0 = @(x) normpdf(x, 0,sqrt(10));             % initial pdf
-gen_x0 = @(x) [R_max* rand R_max* rand 0]';               % sample from p_x0 (returns column vector)
+gen_x0 = @(x) [R_max* (2*rand -1) R_max* (2*rand -1) 0]';               % sample from p_x0 (returns column vector)
 
 %% Observation likelihood PDF p(y[k] | x[k])
 % (under the suposition of additive process noise)
@@ -100,9 +100,9 @@ fprintf('Filtering with PF...');
 pf.k               = 1;                   % initial iteration number
 % pf.Ns              = 5000;                 % number of particles
 pf.w               = ones(pf.Ns, T)/pf.Ns;     % weights
-pf.particles       = [R_max * rand(pf.Ns,1) R_max * rand(pf.Ns,1) zeros(pf.Ns,1)]'; % particles
+pf.particles       = [R_max * (2*rand(pf.Ns,1) -1) R_max * (2*rand(pf.Ns,1) -1) zeros(pf.Ns,1)]'; % particles
 % pf.gen_x0          = gen_x0;              % function for sampling from initial pdf p_x0
-pf.gen_x0          = [R_max * rand(pf.Ns,1) R_max * rand(pf.Ns,1) zeros(pf.Ns,1)]';
+pf.gen_x0          = [R_max * (2*rand(pf.Ns,1) -1) R_max * (2*rand(pf.Ns,1) -1) zeros(pf.Ns,1)]';
 pf.p_yk_given_xk   = p_yk_given_xk;       % function of the observation likelihood PDF p(y[k] | x[k])
 pf.gen_sys_noise   = gen_sys_noise;       % function for generating system noise
 pf.gen_obs_noise   = gen_obs_noise;
@@ -127,7 +127,7 @@ for time = 1:Time
     if time == 1 %|| (1==1) % Initialize for 1st time. Change time to 1 (1 == 1) if want to get random target pos every run
         truth.X = cell(ntarget,1);
         for i=1:ntarget
-            x(:,1) = [R_max * rand; R_max * rand; 0]; 
+            x(:,1) = [R_max * (2*rand -1); R_max * (2*rand -1); 0]; 
             truth.X{i} = x(:,1);
            for k=2:T
                 x(:,k) = sys(k, x(:,k-1), gen_sys_noise()); 
@@ -407,7 +407,7 @@ for i=1:ntarget
 %    text(est.X{i}(1,est.foundIndex{i}) +1,est.X{i}(2,est.foundIndex{i})+1, num2str(i));
 end
 axis([0,350,0,350]);
-axis([0,R_max,0,R_max]);
+axis([-R_max,R_max,-R_max,R_max]);
 %{
 iptsetpref('ImshowBorder','tight');
 set(hFig,'Color','white');
