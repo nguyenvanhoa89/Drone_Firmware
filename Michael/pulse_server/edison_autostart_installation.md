@@ -16,5 +16,6 @@ Optional steps
 
 ```bash
 systemctl start edison_pulse_server.service             # Enable the service without restarting
+systemctl restart edison_pulse_server.service			# Restart the service
 journalctl --no-pager -u edison_pulse_server.service    # Show log to ensure the service is working
 ```
