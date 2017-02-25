@@ -22,7 +22,7 @@ sys = @(k, x, uk) x + uk; % random walk object
 R_max = 500;
 x0 = [R_max * rand; R_max * rand; 0];  
 %% Initial variable
-T = 500; % 15 minutes is max
+T = 200; % 15 minutes is max
 % Time = 1;
 pf.Ns = 3000;             % number of particles
 Ms = 100; % 100 is current best
@@ -77,7 +77,8 @@ gain_angle = load('3D_Directional_Gain_Pattern.txt'); % Phi Theta	TdB
 % obs = @(k, x, vk,uav,gain_angle) friis(Pt, Gt, Gr, lambda, L, d(x,uav(1:3,:)),Get_Antenna_Gain(x, uav,gain_angle))     + vk ;     % (returns column vector)
 % obs = @(k, x, vk,uav,gain_angle) friis_2model(Pt, Gt, Gr, lambda, L, x,uav,Get_Antenna_Gain(x, uav,gain_angle))     + vk ;     % (returns column vector)
 % For ref model
-A_ref = -10.65 - 0.454*64 ; d0 = 40; % (m) 12.67, change to other to test
+% A_ref = -10.65 - 0.454*64 ; d0 = 40; % (m) 12.67, change to other to test
+A_ref = -7 - 0.454*32 ; d0 = 1; % (m) 12.67, change to other to test
 % A_ref = -25.6603 ; d0 = 1; % (m) 12.67, change to other to test
 obs = @(k, x, vk,uav,gain_angle)  friis_with_ref(A_ref,d0, d(x,uav(1:3,:)),Get_Antenna_Gain(x, uav,gain_angle))     + vk ;     % (returns column vector)
 obs_real = @(amplitude, gain) 20 *log10(amplitude) - 0.454 * gain ;
