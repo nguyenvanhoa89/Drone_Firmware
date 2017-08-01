@@ -60,3 +60,11 @@ Add Port 14551 by go to Purple icon >> Comm Links >> Add:
 Then press Add button to add new communication channel.
 
 Please also uncheck UDP when startup.
+## 7. Install MATLAB
+* Download installer @: https://au.mathworks.com/downloads/web_downloads/download_release?release=R2016b
+* Use your school email to register
+
+## 8. Download Hoa's Github folder to run MATLAB
+```
+git clone https://github.cs.adelaide.edu.au/Auto-ID-Lab/Hoa.git
+```
