@@ -12,7 +12,7 @@ cd /home/hoa/Desktop/Github/Hoa/Firmware
 make posix_sitl_default jmavsim 
 ```
 All simulator configuration hardcoded in file src/me/drton/jmavsim/Simulator.java, this file should be edited before running simulator
-## 3. Run QGroundControl.AppImage : 
+## 3. Run QGroundControl.AppImage: 
 ```
 Connect to port 14551
 Arm and take off to 20 meters.
