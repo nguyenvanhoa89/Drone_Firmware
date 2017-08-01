@@ -7,7 +7,8 @@ use std::thread;
 use byteorder::{ReadBytesExt, WriteBytesExt, LittleEndian};
 use common::Command;
 use common::signal::Pulse;
-use serde::{Serialize, Deserialize};
+use serde::Serialize;
+use serde::de::DeserializeOwned;
 use serde_json;
 
 use mavlink_handler::{self, Telemetry};
@@ -44,13 +45,13 @@ pub fn get_latest_pulses() -> Vec<PulseWithTelemetry> {
 pub struct PulseHandle {}
 
 impl PulseHandle {
-    pub fn new() -> PulseHandle {
-        thread::spawn(|| run_pulse_client());
+    pub fn new(addr: String) -> PulseHandle {
+        thread::spawn(move || run_pulse_client(addr));
         PulseHandle {}
     }
 }
 
-fn read_json<R: Read, T: Deserialize>(reader: &mut R, buffer: &mut Vec<u8>) -> T {
+fn read_json<R: Read, T: DeserializeOwned>(reader: &mut R, buffer: &mut Vec<u8>) -> T {
     let size = reader.read_u64::<LittleEndian>().unwrap() as usize;
 
     buffer.clear();

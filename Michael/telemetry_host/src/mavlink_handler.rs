@@ -56,10 +56,10 @@ impl Drop for MavlinkHandle {
 }
 
 impl MavlinkHandle {
-    pub fn new() -> MavlinkHandle {
+    pub fn new(addr: String) -> MavlinkHandle {
         STOPPED.store(false, Ordering::Relaxed);
         *MAVLINK_DATA.lock().unwrap() = SharedData::default();
-        thread::spawn(|| mavlink_background_process());
+        thread::spawn(move || mavlink_background_process(addr));
         MavlinkHandle { }
     }
 }
@@ -114,9 +114,11 @@ struct Coordinate {
     lon: f64,
 }
 
-fn mavlink_background_process() {
-    let connection = mavlink::connect("udpin:127.0.0.1:14552")
-        .expect("Failed to connect to Mavlink stream");
+fn mavlink_background_process(addr: String) {
+    let addr = format!("udpin:{}", addr);
+    println!("Connecting to Mavlink stream: {}", addr);
+
+    let connection = mavlink::connect(&addr).expect("Failed to connect to Mavlink stream");
 
     let mut gps_base = GpsBase::default();
     while STOPPED.load(Ordering::Relaxed) == false {

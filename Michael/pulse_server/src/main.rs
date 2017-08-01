@@ -1,4 +1,5 @@
 #![feature(mpsc_select)]
+//#![feature(field_init_shorthand)] 
 
 extern crate byteorder;
 extern crate common;

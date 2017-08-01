@@ -4,12 +4,13 @@ use std::io::ErrorKind;
 use std::path::Path;
 
 use serde::{Serialize, Deserialize};
+use serde::de::DeserializeOwned;
 use serde_json;
 
 /// Load a file containing json encoded data if it exists. If it does not exist return the default
 /// for the target type, and generate the file.
 pub fn load_json_or_default<T, P>(path: P) -> T
-    where T: Serialize + Deserialize + Default,
+    where T: Serialize + DeserializeOwned + Default,
           P: AsRef<Path> + Display
 {
     match File::open(&path).map(|mut r| serde_json::from_reader(&mut r)) {

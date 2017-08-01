@@ -6,7 +6,7 @@ git clone https://github.com/nguyenvanhoa89/Drone_Firmware.git
 ## 2. Install Nightly Rustc version 
 URL: https://doc.rust-lang.org/book/nightly-rust.html 
 ```
-curl -s https://static.rust-lang.org/rustup.sh | sh -s -- --channel=nightly
+curl -s https://static.rust-lang.org/rustup.sh | sh -s -- --channel=nightly --date=2017-02-12
 ```
 If you've got Rust installed, you can open up a shell, and type this:
 ```

@@ -14,36 +14,49 @@ extern crate serde_json;
 mod pulse_handler;
 mod mavlink_handler;
 
-use rocket_contrib::JSON;
+use rocket_contrib::Json;
+use rocket::Rocket;
 
 use mavlink_handler::{Telemetry, Location, MavlinkHandle};
 use pulse_handler::{PulseWithTelemetry, PulseHandle};
 
 #[get("/")]
-fn get_telemetry() -> JSON<Telemetry> {
-    JSON(mavlink_handler::get_telemetry())
+fn get_telemetry() -> Json<Telemetry> {
+    Json(mavlink_handler::get_telemetry())
 }
 
 #[post("/", data = "<location>")]
-fn do_reposition(location: JSON<Location>) {
-    let target = location.unwrap();
-    mavlink_handler::do_reposition(target);
+fn do_reposition(location: Json<Location>) {
+    mavlink_handler::do_reposition(location.0);
 }
 
-#[get("pulses/<index>")]
-fn get_pulses(index: usize) -> JSON<Vec<PulseWithTelemetry>> {
-    JSON(pulse_handler::get_pulses_since(index))
+#[get("/pulses/<index>")]
+fn get_pulses(index: usize) -> Json<Vec<PulseWithTelemetry>> {
+    Json(pulse_handler::get_pulses_since(index))
 }
 
-#[get("latestpulses")]
-fn get_latest_pulses() -> JSON<Vec<PulseWithTelemetry>> {
-    JSON(pulse_handler::get_latest_pulses())
+#[get("/latestpulses")]
+fn get_latest_pulses() -> Json<Vec<PulseWithTelemetry>> {
+    Json(pulse_handler::get_latest_pulses())
+}
+fn get_mavlink_addr(rocket: &Rocket) -> String {
+    match rocket.config().extras.get("mavlink_addr").and_then(|x| x.as_str()) {
+        Some(value) => value.into(),
+        _ => "127.0.0.1:14552".into()
+    }
 }
 
+fn get_pulse_server_addr(rocket: &Rocket) -> String {
+    match rocket.config().extras.get("pulse_server_addr").and_then(|x| x.as_str()) {
+        Some(value) => value.into(),
+        _ => "127.0.0.1:11000".into()
+    }
+}
 fn main() {
-    let _mavlink_handle = MavlinkHandle::new();
-    let _pulse_handle = PulseHandle::new();
+	let rocket = rocket::ignite().mount("/", routes![get_telemetry, get_pulses, do_reposition]);
 
-    rocket::ignite().mount("/", routes![get_telemetry, get_pulses, do_reposition]).launch();
-//    rocket::ignite().mount("/", routes![get_telemetry, get_latest_pulses, do_reposition]).launch();
+    let _mavlink_handle = MavlinkHandle::new(get_mavlink_addr(&rocket));
+    let _pulse_handle = PulseHandle::new(get_pulse_server_addr(&rocket));
+
+    rocket.launch();
 }

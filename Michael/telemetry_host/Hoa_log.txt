@@ -1,0 +1,26 @@
+[34m🔧  Configured for development.(B[m
+    [37m=>(B[m [34mlistening: [37mlocalhost(B[m[34m:[37m8000(B[m[34m(B[m
+    [37m=>(B[m [34mlogging: [37mNormal(B[m[34m(B[m
+[34m🛰  [35mMounting(B[m[34m '/':(B[m
+    [37m=>(B[m [34m[32mGET(B[m[34m [34m/(B[m[34m(B[m
+    [37m=>(B[m [34m[32mGET(B[m[34m [34m/pulses/<index>(B[m[34m(B[m
+    [37m=>(B[m [34m[32mPOST(B[m[34m [34m/(B[m[34m(B[m
+[34m🚀  [37mRocket has launched from(B[m[34m [37m[1mhttp://(B[m[34m[37m[1mlocalhost:8000(B[m[34m...(B[m
+Pulse from client: Pulse { freq: 150130000, signal_strength: 0.0011023962, gain: 48, timestamp: Timestamp { seconds: 1487833414, nanos: 752726570 } }
+Pulse from client: Pulse { freq: 149062000, signal_strength: 0.0009650127, gain: 48, timestamp: Timestamp { seconds: 1487833415, nanos: 129758752 } }
+Pulse from client: Pulse { freq: 150130000, signal_strength: 0.001214731, gain: 48, timestamp: Timestamp { seconds: 1487833415, nanos: 775051016 } }
+Pulse from client: Pulse { freq: 150130000, signal_strength: 0.0014215852, gain: 48, timestamp: Timestamp { seconds: 1487833416, nanos: 767227875 } }
+Pulse from client: Pulse { freq: 150130000, signal_strength: 0.0013265798, gain: 48, timestamp: Timestamp { seconds: 1487833417, nanos: 759604984 } }
+Pulse from client: Pulse { freq: 150130000, signal_strength: 0.00097564486, gain: 48, timestamp: Timestamp { seconds: 1487833418, nanos: 751471826 } }
+Pulse from client: Pulse { freq: 150411000, signal_strength: 0.0006660483, gain: 52, timestamp: Timestamp { seconds: 1487833420, nanos: 510918056 } }
+Pulse from client: Pulse { freq: 150411000, signal_strength: 0.00063310436, gain: 52, timestamp: Timestamp { seconds: 1487833420, nanos: 722765567 } }
+Pulse from client: Pulse { freq: 150411000, signal_strength: 0.00072715676, gain: 52, timestamp: Timestamp { seconds: 1487833421, nanos: 507275994 } }
+Pulse from client: Pulse { freq: 150130000, signal_strength: 0.005373129, gain: 60, timestamp: Timestamp { seconds: 1487833424, nanos: 770849466 } }
+Pulse from client: Pulse { freq: 150130000, signal_strength: 0.007896044, gain: 64, timestamp: Timestamp { seconds: 1487833426, nanos: 756964231 } }
+Pulse from client: Pulse { freq: 150130000, signal_strength: 0.008859513, gain: 64, timestamp: Timestamp { seconds: 1487833427, nanos: 749093194 } }
+Pulse from client: Pulse { freq: 150130000, signal_strength: 0.0107784495, gain: 68, timestamp: Timestamp { seconds: 1487833429, nanos: 765446421 } }
+Pulse from client: Pulse { freq: 149062000, signal_strength: 0.054427624, gain: 102, timestamp: Timestamp { seconds: 1487833444, nanos: 520673196 } }
+Pulse from client: Pulse { freq: 149062000, signal_strength: 0.034354143, gain: 102, timestamp: Timestamp { seconds: 1487833456, nanos: 750039158 } }
+Pulse from client: Pulse { freq: 150201000, signal_strength: 0.08105064, gain: 102, timestamp: Timestamp { seconds: 1487833469, nanos: 448950155 } }
+Pulse from client: Pulse { freq: 149062000, signal_strength: 0.051405102, gain: 102, timestamp: Timestamp { seconds: 1487833469, nanos: 849958929 } }
+Pulse from client: Pulse { freq: 150201000, signal_strength: 0.11491871, gain: 102, timestamp: Timestamp { seconds: 1487833517, nanos: 769421430 } }
