@@ -14,7 +14,7 @@ make posix_sitl_default jmavsim
 All simulator configuration hardcoded in file src/me/drton/jmavsim/Simulator.java, this file should be edited before running simulator
 ## 3. Run QGroundControl.AppImage: 
 ```
-Connect to port 14551 - Hoa
+Connect to port 14551 
 Arm and take off to 20 meters.
 ```
 ## 4.1 Run Pulse Server If in simulated mode
